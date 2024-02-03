@@ -1,3 +1,13 @@
+<?php
+
+    if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])){
+        // die("need all input");
+        header("Location: index.php");
+    } 
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
