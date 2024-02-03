@@ -721,6 +721,14 @@ video {
   width: 1.5rem;
 }
 
+.w-5 {
+  width: 1.25rem;
+}
+
+.w-9 {
+  width: 2.25rem;
+}
+
 .max-w-\[1000px\] {
   max-width: 1000px;
 }
@@ -906,6 +914,10 @@ video {
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.p-\[\FFFD\] {
+  padding: �;
 }
 
 .px-2 {

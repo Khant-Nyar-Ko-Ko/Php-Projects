@@ -99,23 +99,21 @@
                 </li>
             </ol>
             <hr class=" my-3 border-gray-300">
-            <form action="./area.php" method="POST">
-                <div class="mb-4">
-                    <label for="home-width" class="block text-sm font-medium mb-2 dark:text-white">Enter Width: </label>
-                    <input type="number" name="home-width" id="home-width"
-                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                </div>
-                <div class="mb-6">
-                    <label for="home-breadth" class="block text-sm font-medium mb-2 dark:text-white">Enter Breadth:
-                    </label>
-                    <input type="number" name="home-breadth" id="home-breadth"
-                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                </div>
-                <button type="submit"
+            <?php 
+            
+            $width = $_POST["home-width"];
+            $breadth = $_POST["home-breadth"];
+
+            $area = $width * $breadth;
+            ?>
+
+            <p class="text-3xl text-center mb-4">
+                <?= $area ?> Sqft
+            </p>
+            <a href="./index.php" type="button"
                     class="py-3 px-4 w-full justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                    Calculate
-                </button>
-            </form>
+                    Calculate Again
+                </a>
         </section>
     </main>
     <script src="./node_modules/preline/dist/preline.js"></script>
