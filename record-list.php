@@ -1,13 +1,3 @@
-<?php
-
-if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
-    // die("need all input");
-    header("Location: index.php");
-}
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,7 +92,7 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                     </svg>
                 </li>
                 <li class="inline-flex items-center">
-                    <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
+                    <a class="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
                         href="./index.php">
                         Area Calculator
                     </a>
@@ -114,43 +104,40 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                 </li>
                 <li class="inline-flex items-center">
                     <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
-                        href="./area.php">
-                        Calculate Result
+                        href="#">
+                        Record List
                     </a>
                 </li>
             </ol>
             <hr class=" my-3 border-gray-300">
-            <?php
 
-            $width = $_POST["home-width"];
-            $breadth = $_POST["home-breadth"];
+            <section>
+                <?php
+                $fileName = "saveRecord.txt";
 
-            $area = $width * $breadth;
+                if (!file_exists($fileName)) {
+                    touch($fileName);
+                }
 
-            $fileName = "saveRecord.txt";
+                $fileStream = fopen($fileName, "r");
 
-            if (!file_exists($fileName)) {
-                touch($fileName);
-            }
+                while (!feof($fileStream)):
+                    $content = fgets($fileStream);
+                    if($content == "\n") continue;
+                    ?>
 
-            $fileStream = fopen($fileName, "a");
-            fwrite($fileStream, "\n$width * $breadth = $area");
-            fclose($fileStream);
-            ?>
-
-            <p class="text-3xl text-center mb-4">
-                <?= $area ?> Sqft
-            </p>
-          <div class="flex gap-3">
-          <a href="./index.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    <p class=" font-mono text-gray-700 bg-white p-4 rounded-lg mb-2">
+                        <?=
+                            $content;
+                        ?>
+                    </p>
+                <?php endwhile; ?>
+                <a href="./index.php" type="button"
+                class="py-3 px-4 mt-3 w-full justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                 Calculate Again
             </a>
-            <a href="./record-list.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                Check Record
-            </a>
-          </div>
+            </section>
+
         </section>
     </main>
     <script src="./node_modules/preline/dist/preline.js"></script>
