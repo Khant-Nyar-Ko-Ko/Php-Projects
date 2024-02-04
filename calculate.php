@@ -1,9 +1,20 @@
 <?php
 
-if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
-    // die("need all input");
-    header("Location: index.php");
-}
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', '1');
+
+$amount = $_POST["amount"];
+
+$from_currency_arr = explode("-", $_POST["from_currency"]);
+$from_currency_name = $from_currency_arr[0];
+$from_currency_rate = str_replace(',', ' ', $from_currency_arr[1]);
+
+$to_currency_arr = explode("-", $_POST["to_currency"]);
+$to_currecy_name = $to_currency_arr[0];
+$to_currecy_rate = str_replace(',', ' ', $to_currency_arr[1]);
+
+$result = $amount * ($to_currecy_rate / $from_currency_rate);
+$result = number_format($result, 2, '.', ",");
 
 
 ?>
@@ -14,13 +25,13 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area Calc</title>
+    <title>Exchange</title>
     <link rel="stylesheet" href="./app.css">
 </head>
 
 <body>
     <main class=" max-w-[1000px] mx-auto p-10">
-    <header class=" flex gap-5 items-center mb-6">
+        <header class=" flex gap-5 items-center mb-6">
             <!-- Navigation Toggle -->
             <button type="button" class="text-gray-500 hover:text-gray-600" data-hs-overlay="#docs-sidebar"
                 aria-controls="docs-sidebar" aria-label="Toggle navigation">
@@ -94,8 +105,8 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                 </li>
                 <li class="inline-flex items-center">
                     <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
-                        href="./index.php">
-                        Area Calculator
+                        href="./exchange.php">
+                        Exchange Calculator
                     </a>
                     <svg class="flex-shrink-0 mx-2 overflow-visible h-4 w-4 text-gray-400 dark:text-neutral-600"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -106,42 +117,39 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                 <li class="inline-flex items-center">
                     <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
                         href="./area.php">
-                        Calculate Result
+                        Exchanged Result
                     </a>
                 </li>
             </ol>
             <hr class=" my-3 border-gray-300">
-            <?php
-
-            $width = $_POST["home-width"];
-            $breadth = $_POST["home-breadth"];
-
-            $area = $width * $breadth;
-
-            $fileName = "saveRecord.txt";
-
-            if (!file_exists($fileName)) {
-                touch($fileName);
-            }
-
-            $fileStream = fopen($fileName, "a");
-            fwrite($fileStream, "\n$width * $breadth = $area");
-            fclose($fileStream);
-            ?>
-
             <p class="text-3xl text-center mb-4">
-                <?= $area ?> Sqft
+                <?php
+
+                $fileName = "exchangeRecord.txt";
+
+                if (!file_exists($fileName)) {
+                    touch($fileName);
+                }
+
+                $fileStream = fopen($fileName, "a");
+                fwrite($fileStream, "\n$amount $from_currency_name is equal $result $to_currecy_name " );
+                fclose($fileStream);
+                ?>
+                <?= $amount ?>
+                <?= $from_currency_name ?> is equal with
+                <?= $result ?>
+                <?= $to_currecy_name ?>
             </p>
-          <div class="flex gap-3">
-          <a href="./index.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                Calculate Again
-            </a>
-            <a href="./record-list.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                Check Record
-            </a>
-          </div>
+            <div class="flex gap-3">
+                <a href="./exchange.php" type="button"
+                    class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    Convert More
+                </a>
+                <a href="./exchange-record.php" type="button"
+                    class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    Check Record
+                </a>
+            </div>
         </section>
     </main>
     <script src="./node_modules/preline/dist/preline.js"></script>

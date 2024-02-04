@@ -1,26 +1,16 @@
-<?php
-
-if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
-    // die("need all input");
-    header("Location: index.php");
-}
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area Calc</title>
+    <title>Exchange</title>
     <link rel="stylesheet" href="./app.css">
 </head>
 
 <body>
     <main class=" max-w-[1000px] mx-auto p-10">
-    <header class=" flex gap-5 items-center mb-6">
+        <header class=" flex gap-5 items-center mb-6">
             <!-- Navigation Toggle -->
             <button type="button" class="text-gray-500 hover:text-gray-600" data-hs-overlay="#docs-sidebar"
                 aria-controls="docs-sidebar" aria-label="Toggle navigation">
@@ -48,7 +38,6 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z" />
                             </svg>
-
                             Area Calculator
                         </a>
                     </li>
@@ -94,8 +83,8 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                 </li>
                 <li class="inline-flex items-center">
                     <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
-                        href="./index.php">
-                        Area Calculator
+                        href="./exchange.php">
+                        Exchange Calculator
                     </a>
                     <svg class="flex-shrink-0 mx-2 overflow-visible h-4 w-4 text-gray-400 dark:text-neutral-600"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -105,43 +94,39 @@ if (empty($_POST["home-width"]) || empty($_POST["home-breadth"])) {
                 </li>
                 <li class="inline-flex items-center">
                     <a class="flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:focus:text-blue-500"
-                        href="./area.php">
-                        Calculate Result
+                        href="./exchange-record.php">
+                        Exchanged Record
                     </a>
                 </li>
             </ol>
             <hr class=" my-3 border-gray-300">
             <?php
+                $fileName = "exchangeRecord.txt";
 
-            $width = $_POST["home-width"];
-            $breadth = $_POST["home-breadth"];
+                if (!file_exists($fileName)) {
+                    touch($fileName);
+                }
 
-            $area = $width * $breadth;
+                $fileStream = fopen($fileName, "r");
 
-            $fileName = "saveRecord.txt";
+                while (!feof($fileStream)):
+                    $content = fgets($fileStream);
+                    if($content == "\n") continue;
+                    ?>
 
-            if (!file_exists($fileName)) {
-                touch($fileName);
-            }
-
-            $fileStream = fopen($fileName, "a");
-            fwrite($fileStream, "\n$width * $breadth = $area");
-            fclose($fileStream);
-            ?>
-
-            <p class="text-3xl text-center mb-4">
-                <?= $area ?> Sqft
-            </p>
-          <div class="flex gap-3">
-          <a href="./index.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                Calculate Again
-            </a>
-            <a href="./record-list.php" type="button"
-                class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500 dark:hover:border-blue-600 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                Check Record
-            </a>
-          </div>
+                    <p class=" font-mono text-gray-700 bg-white p-4 rounded-lg mb-2">
+                        <?=
+                            $content;
+                        ?>
+                    </p>
+                <?php endwhile; ?>
+            <div class="flex gap-3">
+                <a href="./exchange.php" type="button"
+                    class=" flex-grow py-3 px-4 justify-center inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    Convert More
+                </a>
+ 
+            </div>
         </section>
     </main>
     <script src="./node_modules/preline/dist/preline.js"></script>
