@@ -22,7 +22,13 @@
     ?>
     <div class=" columns-3 gap-3 mt-5">
         <?php foreach ($photos as $photo) : ?>
-            <img src="photos/<?= $photo ?>" alt="">
+            <div class=" inline-block relative">
+            <img class=" mb-3 w-10 rounded-lg" src="photos/<?= $photo ?>" alt="">
+            <a href="./gallery-photo-delete.php" type="button" class=" absolute bottom-0 right-0 py-3 px-4 mb-5 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                Delete
+            </a>
+            </div>
+            
         <?php endforeach ?>
     </div>
 <?php include("./template/footer.php") ?>
